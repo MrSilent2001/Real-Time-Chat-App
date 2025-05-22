@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, {JwtPayload} from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -8,3 +8,7 @@ export const generateToken = (userId: string) => {
     expiresIn: '7d',
   });
 };
+
+export const verifyToken = (token: string): JwtPayload => {
+  return jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+} 

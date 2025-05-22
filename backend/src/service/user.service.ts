@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import {generateToken} from '../utils/jwt';
 import mongoose from 'mongoose';
 
+//Create New User
 export const createUser = async(username: string, email:string, password:string): Promise<NewUser> => {
     //check whether user is already registered
     const existingUser = await User.findOne({email});
@@ -25,6 +26,7 @@ export const createUser = async(username: string, email:string, password:string)
 }
 
 
+//User login
 export const userLogin = async (username: string, password: string) => {
     //check whether user is already registered
     const existingUser = await User.findOne({username});
@@ -47,4 +49,16 @@ export const userLogin = async (username: string, password: string) => {
         token
     }
     return user;
+}
+
+
+//Search a user
+export const searchUser = async (id:string, search?: string) => {
+    const query = search 
+    ? 
+        { username: {$regex: search, $options: 'i'}} 
+    :   {}
+
+    const users = await User.find(query).find({_id: {$ne: id}});
+    return users;
 }

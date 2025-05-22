@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import {dbConnect} from './config/dbConnect';
 import userRoutes from './routes/user.routes';
+import chatRoutes from './routes/chat.routes';
 import cors from 'cors';
 
 dotenv.config();
@@ -20,6 +21,7 @@ dbConnect();
 
 //Routes
 app.use('/api/users', userRoutes);
+app.use('/api/chats', chatRoutes);
 
 app.listen(port, () =>{
     console.log(`Server is running at port: ${port}`);
