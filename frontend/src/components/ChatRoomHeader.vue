@@ -1,13 +1,23 @@
 <script setup lang="ts">
+    import { useRouter } from 'vue-router';
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
     import { library } from '@fortawesome/fontawesome-svg-core';
     library.add(faRightFromBracket);
 
+    const router = useRouter();
+
     import { defineProps } from 'vue';
     const props = defineProps<{
         selectedChat: any
     }>();
+
+    const userId = localStorage.getItem('userId');
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push("/");
+    }
     
 </script>
 
@@ -20,7 +30,7 @@
                 class="text-xl text-center"
                 v-if="selectedChat"
             >
-                    {{ selectedChat.users[1].username }}
+                    {{ selectedChat.users.find((u) => u._id !== userId)?.username }}
             </p>
             <div class="flex items-center justify-end h-12 gap-10">
                 <div
@@ -29,7 +39,10 @@
                 >
                     N
                 </div>
-                <button class="absolute text-black hover:text-gray-500 right-3">
+                <button 
+                    class="absolute text-black hover:text-gray-500 right-3"
+                    @click="handleLogout"
+                >
                     <FontAwesomeIcon :icon="['fas', 'right-from-bracket']" class="text-lg" />
                 </button>
             </div>

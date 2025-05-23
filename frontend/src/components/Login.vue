@@ -14,7 +14,9 @@
             
             if(response.status === 200){
                 const token = response.data.user.token;
+                const id = response.data.user._id;
                 localStorage.setItem('token', token);
+                localStorage.setItem('userId', id);
 
                 router.push('/chat');
             }
@@ -30,11 +32,11 @@
 </script>
 
 <template>
-  <div class="flex items-center justify-center m-auto h-screen bg-green-100">
-    <div class="flex flex-col items-center justify-center w-1/2 h-auto bg-white p-8 rounded-xl space-y-4 shadow-xl">
+  <div class="flex items-center justify-center h-screen m-auto bg-green-100">
+    <div class="flex flex-col items-center justify-center w-1/2 h-auto p-8 space-y-4 bg-white shadow-xl rounded-xl">
       <h1 class="text-3xl font-bold text-center text-black">Login</h1>
 
-      <div class="flex flex-col space-y-4 w-3/4">
+      <div class="flex flex-col w-3/4 space-y-4">
         <form @submit.prevent="handleSubmit">
             <div class="my-3">
                 <label for="username" class="block mb-1 font-medium">Username</label>
@@ -46,10 +48,10 @@
                 <input type="password" id="password" name="password" class="w-full p-2 border border-gray-400 rounded-lg" v-model="password" required/>
             </div>
 
-            <button class="w-full p-2 bg-blue-900 text-white rounded hover:bg-blue-700 my-5">Login</button>
+            <button class="w-full p-2 my-5 text-white bg-blue-900 rounded hover:bg-blue-700">Login</button>
             <p class="text-center">
                 Don't you have an account? 
-                <span class="text-blue-600 cursor-pointer font-semibold" @click="goToSignup">Signup</span>
+                <span class="font-semibold text-blue-600 cursor-pointer" @click="goToSignup">Signup</span>
             </p>
         </form>
       </div>

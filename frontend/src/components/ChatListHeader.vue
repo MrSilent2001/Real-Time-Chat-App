@@ -22,7 +22,6 @@
     }
 
     const selectChat = async(chat) => {
-        console.log(chat._id);
         try {
             await assignChats(chat._id);
             emit('chatAssigned');
