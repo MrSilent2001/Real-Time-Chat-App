@@ -1,17 +1,18 @@
 <script setup lang="ts">
-    import { defineProps, defineEmits } from 'vue';
+    import { defineProps } from 'vue';
+    import { useChatStore } from '@/stores/chatStore';
 
-    const emit = defineEmits(['select']);
+    const chatStore = useChatStore();
+    const userId = localStorage.getItem('userId');
 
     const props = defineProps({
         chatList: Array
     });
 
     const selectChat = (chat) => {
-        emit('select', chat);
+      chatStore.setSelectedChat(chat);
     }
-
-    const userId = localStorage.getItem('userId');
+    
 </script>
 
 <template>

@@ -3,13 +3,14 @@ import Chat from '../model/chat.model';
 export const accessChat = async(userId: string, user: any) => {
 
     let existingChat = await Chat.find({
+        isGroupChat: false,
         $and: [
-            {users: {$elemMatch: {$eq: user._id }}},
-            {users: {$elemMatch: {$eq: userId}}}
-        ]
-    })
-    .populate("users", "-password")
-    .populate("latestMessage");
+            { users: { $elemMatch: { $eq: user._id } } },
+            { users: { $elemMatch: { $eq: userId } } },
+            ],
+        })
+        .populate("users", "-password")
+        .populate("latestMessage");
 
     existingChat = await Chat.populate(existingChat,{
         path: "latestMessage.sender",
@@ -22,6 +23,7 @@ export const accessChat = async(userId: string, user: any) => {
     else{
         const chatData = {
             chatName: "sender",
+            isGroupChat: false,
             users: [user._id, userId],
         };
 

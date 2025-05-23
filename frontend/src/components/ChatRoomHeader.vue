@@ -1,16 +1,17 @@
 <script setup lang="ts">
     import { useRouter } from 'vue-router';
+    import { useChatStore } from '@/stores/chatStore';
+    import { storeToRefs } from 'pinia';
+    
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
     import { library } from '@fortawesome/fontawesome-svg-core';
     library.add(faRightFromBracket);
 
     const router = useRouter();
-
-    import { defineProps } from 'vue';
-    const props = defineProps<{
-        selectedChat: any
-    }>();
+    
+    const chatStore = useChatStore();
+    const { selectedChat } = storeToRefs(chatStore);
 
     const userId = localStorage.getItem('userId');
 
