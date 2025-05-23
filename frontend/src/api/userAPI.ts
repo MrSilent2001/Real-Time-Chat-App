@@ -1,14 +1,5 @@
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-const token = localStorage.getItem("token");
+import api from '@/utils/interceptor.ts';
 
 //login
 export const login = async(username: string, password: string) => {
@@ -47,9 +38,6 @@ export const searchUser = async(search: string) => {
         const response = api.get("/api/users",{
             params: { 
                 search 
-            },
-            headers:{
-                'Authorization': `Bearer ${token}`
             }
         });
 

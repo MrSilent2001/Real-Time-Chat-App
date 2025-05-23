@@ -1,33 +1,15 @@
 <script setup lang="ts">
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { faPaperPlane  } from '@fortawesome/free-solid-svg-icons';
-    import { library } from '@fortawesome/fontawesome-svg-core';
-    library.add(faPaperPlane );
-    import {sendNewMessage, fetchChatMessages} from '@/api/messageAPI.ts';
-    import ScrollableChat from '@/components/ScrollableChat.vue';
-    import {ref, watch, onMounted} from 'vue';
+    import {ref, watch, onMounted, onBeforeUnmount} from 'vue';
     import { useChatStore } from '@/stores/chatStore';
     import { storeToRefs } from 'pinia';
 
+    import {sendNewMessage, fetchChatMessages} from '@/api/messageAPI.ts';
+    import ScrollableChat from '@/components/ScrollableChat.vue';
+
+    import SocketioService from '@/services/socket.io.ts';
+    
     const chatStore = useChatStore();
     const { selectedChat } = storeToRefs(chatStore);
-    // import { io, Socket } from 'socket.io-client';
-    // const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-    // const socket = ref<Socket | null>(null);
-    // const selectedChatCompare = ref<string>('');
-
-    // onMounted(() => {
-    //     socket.value = io(BASE_URL);
-
-    //     socket.value.on("connect", () => {
-    //         console.log("Connected to socket server: ", socket.value?.id);
-    //     });
-
-    //     socket.value.on("receive-message", (data: string) => {
-    //         console.log("Received message: ", data);
-    //     });  
-    // });
 
     const newMessage = ref('');
     const chatMessages = ref([]);
@@ -36,7 +18,7 @@
         try {
             const response = await sendNewMessage(newMessage.value, selectedChat.value._id);
             console.log(response);
-            chatMessages.value.push(response.data);
+            SocketioService.sendMessage(response.data);
             newMessage.value = '';
         } catch (error) {
             console.log(error);
@@ -48,7 +30,6 @@
             const response = await fetchChatMessages(selectedChat.value._id);
             chatMessages.value = response.data;
             console.log(chatMessages.value);
-            
         } catch (error) {
             console.log(error);
         }
@@ -56,12 +37,37 @@
 
     //fetch chat messages when a chat selected
     watch(selectedChat, (newChat) => {
-        if (newChat && newChat._id) {
-            fetchMessages();
-        } else {
-            chatMessages.value = []; 
+            if (newChat && newChat._id) {
+                fetchMessages();
+
+                // Connect socket when chat selected
+                SocketioService.joinRoom(newChat._id);                
+            } else {
+                chatMessages.value = []; 
+            }
+        }, 
+        { immediate: true }
+    );
+
+    onMounted(() => {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            SocketioService.setupSocketConnection(userId);
         }
-    }, { immediate: true });
+        
+        SocketioService.onMessageReceived((newMessage: any) => {
+            console.log('Message received via socket:', newMessage);
+
+            // Only push if it's for the currently selected chat
+            if (selectedChat.value && newMessage.chat._id === selectedChat.value._id) {
+                chatMessages.value.push(newMessage);
+            }
+        });
+    });
+
+    onBeforeUnmount(() => {
+        SocketioService.disconnect();
+    });
 
 </script>
 
@@ -88,7 +94,7 @@
                     class="text-gray-800 hover:text-gray-400"
                     @click="sendMessage"
                 >
-                    <FontAwesomeIcon :icon="['fas', 'paper-plane']" class="text-lg" />
+                    <font-awesome-icon icon="paper-plane" class="text-lg" />
                 </button>
             </div>
         </div>

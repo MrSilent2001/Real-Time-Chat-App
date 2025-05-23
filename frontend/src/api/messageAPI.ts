@@ -1,24 +1,10 @@
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-const token = localStorage.getItem("token");
+import api from '@/utils/interceptor.ts';
 
 //Fetch messages
 export const fetchChatMessages = async(chatId: string) => {
     try {
-        const response = api.get(`/api/messages/${chatId}`,{
-            headers:{
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
+        const response = api.get(`/api/messages/${chatId}`);
         return response;
 
     } catch (error) {
@@ -33,10 +19,6 @@ export const sendNewMessage = async(content: string, chatId: string) => {
         const response = api.post("/api/messages",{
             content: content,
             chatId: chatId
-        },{
-            headers:{
-                'Authorization': `Bearer ${token}`
-            }
         });
 
         return response;

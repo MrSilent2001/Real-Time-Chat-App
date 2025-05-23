@@ -27,7 +27,11 @@
 </script>
 
 <template>
-    <div ref="container" class="flex flex-col justify-end w-full h-full px-4 py-2 overflow-y-scroll scrollbar-hide">
+    <div ref="container" class="flex flex-col w-full h-[600px] px-4 py-2 overflow-y-scroll scrollbar-hide">
+
+        <!-- Spacer that grows to push messages down -->
+        <div class="flex-grow"></div>
+        
         <div v-for="(msg, index) in chatMessages" :key="msg._id" class="flex items-end gap-2 mb-2"
             :class="msg.sender._id === userId ? 'justify-end' : 'justify-start'"
         >

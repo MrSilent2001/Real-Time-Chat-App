@@ -37,7 +37,31 @@ const io = new Server(server, {
   }
 });
 
-io.on("connection", (socket) => {
-  console.log("Connected to socket.io");
+
+io.on('connection', (socket) => {
+  console.log('A User Connected');
+
+  socket.on('disconnect', () => {
+    console.log('User Disconnected:', socket.id);
+  });
   
+  socket.on('setup', (userId) =>{
+    socket.join(userId);
+    socket.emit('connected');
+  });
+
+  socket.on('join-chat', (room) =>{
+    socket.join(room);
+    console.log('User joined chatRoom: ', room);
+  });
+
+  socket.on('new-message', (newMessageReceived) => {
+    const chat = newMessageReceived.chat;
+
+    if (!chat.users) {
+      return console.log('Chat.users not defined');
+    }
+
+    io.to(chat._id).emit('message-received', newMessageReceived);
+  });
 });
