@@ -2,11 +2,6 @@
     import { ref, watch, onMounted, onBeforeUnmount, defineEmits } from 'vue';
     import {searchUser} from '@/api/userAPI.ts';
     import {assignChats} from '@/api/chatAPI.ts';
-    
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { faMagnifyingGlass  } from '@fortawesome/free-solid-svg-icons';
-    import { library } from '@fortawesome/fontawesome-svg-core';
-    library.add(faMagnifyingGlass);
 
     const emit = defineEmits(['chatAssigned']);
     
@@ -71,7 +66,7 @@
                     type="text" 
                     name="search" 
                     placeholder="Search chats"
-                    class="w-full h-10 p-3 border border-gray-400 rounded-lg"
+                    class="w-full h-10 p-3 bg-white border border-gray-400 rounded-lg"
                     v-model="search"
                     @focus="showResults = false"
                 />
@@ -79,7 +74,7 @@
                     @click="searchChats"
                     class="absolute flex items-center justify-center w-10 h-10 text-black right-3 top-0.5 hover:text-gray-500"
                     >
-                    <FontAwesomeIcon icon="magnifying-glass" class="text-lg" />
+                    <font-awesome-icon icon="magnifying-glass" class="text-lg" />
                 </button>
             </div>
         </div>

@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '@/components/Login.vue';
 import Signup from '@/components/Signup.vue';
-// import Chat from '@/components/Chat.vue';
 import ChatView from '@/views/ChatView.vue';
 
 const router = createRouter({
@@ -17,11 +16,6 @@ const router = createRouter({
       name: 'signup',
       component: Signup 
     },
-    // {
-    //   path: '/chat',
-    //   name: 'chat',
-    //   component: Chat 
-    // },
     {
       path: '/chat',
       name: 'chat',

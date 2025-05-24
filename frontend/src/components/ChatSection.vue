@@ -87,7 +87,7 @@
                     type="text" 
                     name="search" 
                     placeholder=""
-                    class="w-full h-10 p-3 border border-gray-300 rounded-xl"
+                    class="w-full h-10 p-3 bg-white border border-gray-300 rounded-xl"
                     @keydown.enter="sendMessage"
                 />
                 <button 

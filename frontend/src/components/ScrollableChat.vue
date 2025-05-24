@@ -27,7 +27,7 @@
 </script>
 
 <template>
-    <div ref="container" class="flex flex-col w-full h-[600px] px-4 py-2 overflow-y-scroll scrollbar-hide">
+    <div ref="container" class="flex flex-col w-full h-[600px] px-4 py-2 overflow-y-scroll scrollbar-hide bg-slate-200">
 
         <!-- Spacer that grows to push messages down -->
         <div class="flex-grow"></div>
@@ -37,8 +37,8 @@
         >
             <!-- Message bubble -->
             <p 
-                class="px-3 py-1 text-white rounded-xl w-max max-w-[75%] break-words whitespace-pre-wrap"
-                :class="msg.sender._id === userId ? 'bg-red-500' : 'bg-blue-500'"
+                class="px-4 py-1 text-white rounded-2xl w-max max-w-[75%] break-words whitespace-pre-wrap"
+                :class="msg.sender._id === userId ? 'bg-green-600' : 'bg-blue-500'"
             >
                 {{ msg.content }}
             </p>

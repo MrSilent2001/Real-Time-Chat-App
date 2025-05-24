@@ -2,11 +2,7 @@
     import { useRouter } from 'vue-router';
     import { useChatStore } from '@/stores/chatStore';
     import { storeToRefs } from 'pinia';
-    
-    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-    import { library } from '@fortawesome/fontawesome-svg-core';
-    library.add(faRightFromBracket);
+    import Avatar from '@/components/Avatar.vue';
 
     const router = useRouter();
     
@@ -35,17 +31,14 @@
                     {{ selectedChat.users.find((u) => u._id !== userId)?.username }}
             </p>
             <div class="flex items-center justify-end h-12 gap-10">
-                <div
-                    class="flex items-center justify-center w-12 h-12 bg-blue-200 rounded-full "
-                    v-if="selectedChat"
-                >
-                    N
-                </div>
+                
+                <Avatar v-if="selectedChat" />
+                
                 <button 
                     class="absolute text-black hover:text-gray-500 right-3"
                     @click="handleLogout"
                 >
-                    <FontAwesomeIcon :icon="['fas', 'right-from-bracket']" class="text-lg" />
+                    <font-awesome-icon :icon="['fas', 'right-from-bracket']" class="text-lg" />
                 </button>
             </div>
         </div>
